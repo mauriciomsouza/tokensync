@@ -160,7 +160,7 @@ describe('renderers', () => {
   it('html report is self-contained, escaped and deterministic', () => {
     const html = renderHtml(result);
     expect(html).toMatch(/^<!doctype html>/);
-    expect(html).not.toMatch(/<script|<link|https?:\/\/(?!www\.w3)/);
+    expect(html).not.toMatch(/<script|<link(?! rel="icon" href="data:,")|https?:\/\/(?!www\.w3)/);
     expect(html).toContain('Aurora Design System');
     expect(html).toBe(renderHtml(check(aurora()).result));
     const evil = renderHtml({ ...result, project: '<img src=x onerror=alert(1)>' });

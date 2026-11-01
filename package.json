@@ -50,7 +50,9 @@
     "example": "node dist/cli.js check --config examples/aurora/tokensync.config.json",
     "example:report": "node dist/cli.js report --config examples/aurora/tokensync.config.json --out examples/aurora/tokensync-report.html",
     "render": "node design/render.mjs",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build && npm run build:site",
+    "build:site": "node scripts/build-site.mjs",
+    "preview:site": "node scripts/serve-site.mjs"
   },
   "dependencies": {
     "picocolors": "^1.1.1",

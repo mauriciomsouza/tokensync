@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>tokensync · Catch design-token drift</title>
+    <meta
+      name="description"
+      content="tokensync compares Figma variables with the tokens in your code, shows drift with visual color diffs, and can sync the code for you. Try it in the browser."
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="./"><span class="mark" aria-hidden="true"></span>tokensync</a>
+      <nav>
+        <a href="#playground">Playground</a>
+        <a href="report/">Example report</a>
+        <a href="https://github.com/mauriciomsouza/tokensync">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Open source · CLI + GitHub Action</p>
+        <h1>Catch design-token drift<br />before it ships.</h1>
+        <p class="lede">
+          A designer changes a color in Figma. Nobody updates the CSS. A month later the product has two sources of
+          truth. <strong>tokensync</strong> compares Figma variables with the tokens in your code, shows exactly what
+          drifted, and can open a pull request to fix it.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#playground">Try it in the browser</a>
+          <code class="install">npx tokensync check</code>
+        </div>
+        <ul class="facts">
+          <li><b>Figma Variables</b> with modes and aliases</li>
+          <li><b>CSS, DTCG, Tailwind</b> on the code side</li>
+          <li><b>ΔE 2000</b> perceptual color diffs</li>
+          <li><b>Exit 1 on drift</b> for CI</li>
+        </ul>
+      </section>
+
+      <section class="how" aria-label="How it works">
+        <ol>
+          <li>
+            <span>01</span>
+            <h3>Read</h3>
+            <p>Figma variables from the REST API or an export. Aliases resolved per mode, names normalized.</p>
+          </li>
+          <li>
+            <span>02</span>
+            <h3>Compare</h3>
+            <p>Against CSS custom properties, DTCG JSON or a Tailwind theme. Colors compared perceptually.</p>
+          </li>
+          <li>
+            <span>03</span>
+            <h3>Report</h3>
+            <p>Terminal table, JSON, a sticky PR comment, or a single-file HTML report with swatches.</p>
+          </li>
+          <li>
+            <span>04</span>
+            <h3>Sync</h3>
+            <p>Rewrite the code tokens to match Figma, keeping comments, units and key order.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="playground" class="playground">
+        <div class="pg-head">
+          <div>
+            <h2>Playground</h2>
+            <p>
+              Pre-filled with <em>Aurora</em>, a fictional design system with intentional drift. Edit either side and the
+              report updates live. Runs entirely in your browser.
+            </p>
+          </div>
+          <button id="reset" class="btn" type="button">Reset example</button>
+        </div>
+
+        <div class="pg-grid">
+          <div class="pg-inputs">
+            <label class="pg-field">
+              <span class="pg-label">Figma Variables JSON <small>GET /v1/files/:key/variables/local</small></span>
+              <textarea id="figma-input" spellcheck="false" autocomplete="off" aria-label="Figma Variables JSON"></textarea>
+            </label>
+            <div class="pg-field">
+              <div class="pg-label pg-label-row">
+                <span>Code tokens · <span id="code-label">tokens.css</span></span>
+                <select id="format" aria-label="Code token format">
+                  <option value="css">CSS custom properties</option>
+                  <option value="dtcg">W3C Design Tokens (DTCG)</option>
+                  <option value="tailwind">Tailwind theme JSON</option>
+                </select>
+              </div>
+              <textarea id="code-input" spellcheck="false" autocomplete="off" aria-label="Code tokens"></textarea>
+            </div>
+            <div class="pg-controls">
+              <label class="pg-range">
+                <span>Color threshold <output id="threshold-out">1.0</output> ΔE</span>
+                <input id="threshold" type="range" min="0" max="5" step="0.1" value="1" />
+              </label>
+              <label class="pg-check"><input id="scoped" type="checkbox" checked /> Use the example's include/exclude</label>
+            </div>
+          </div>
+
+          <div class="pg-out">
+            <div class="pg-tabs" role="tablist" aria-label="Output">
+              <button role="tab" aria-selected="true" data-view="report">Report</button>
+              <button role="tab" aria-selected="false" data-view="markdown">PR comment</button>
+              <button role="tab" aria-selected="false" data-view="sync">sync diff</button>
+            </div>
+            <p id="status" class="pg-status" aria-live="polite"></p>
+            <div id="output" class="pg-output"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="action">
+        <div>
+          <h2>In CI, on every pull request</h2>
+          <p>
+            The GitHub Action runs <code>tokensync check</code>, posts one sticky comment with the drift report, and can
+            open a “sync tokens” PR on a schedule. See the <a href="report/">full example report</a>.
+          </p>
+        </div>
+        <pre class="pg-code"><code>- uses: mauriciomsouza/tokensync@v0
+  with:
+    figma-file-key: ${{ vars.FIGMA_FILE_KEY }}
+    figma-token: ${{ secrets.FIGMA_TOKEN }}
+    comment: true</code></pre>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>MIT · made by <a href="https://github.com/mauriciomsouza">Mauricio Souza</a></span>
+      <span>All example data is fictional.</span>
+    </footer>
+
+    <script type="module" src="assets/playground.js"></script>
+  </body>
+</html>

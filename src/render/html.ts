@@ -22,13 +22,13 @@ export const REPORT_CSS = `
 .ts-report{--paper:#f7f6f2;--card:#ffffff;--ink:#16161a;--ink-2:#55565e;--ink-3:#8a8b93;--rule:#e4e2dc;--rule-2:#efede8;
 --changed:#b45309;--changed-bg:#fdf3e4;--added:#1d5fd1;--added-bg:#eaf1fd;--removed:#b42318;--removed-bg:#fdecea;--ok:#127a4a;--ok-bg:#e7f5ee;
 --check:linear-gradient(45deg,#d9d7d0 25%,transparent 25%,transparent 75%,#d9d7d0 75%),linear-gradient(45deg,#d9d7d0 25%,#fff 25%,#fff 75%,#d9d7d0 75%);
---sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--ring:rgb(0 0 0/.1);--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
-@media (prefers-color-scheme:dark){.ts-report:not([data-theme=light]){--paper:#121214;--card:#1a1a1e;--ink:#ececef;--ink-2:#a4a5ad;--ink-3:#6f707a;--rule:#2b2b31;--rule-2:#222227;
+color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;container-type:inline-size}
+@media (prefers-color-scheme:dark){.ts-report:not([data-theme=light]){--paper:#121214;--card:#1a1a1e;--ink:#ececef;--ink-2:#a4a5ad;--ink-3:#6f707a;--rule:#2b2b31;--rule-2:#222227;--ring:rgb(255 255 255/.16);
 --changed:#f0a54a;--changed-bg:#2c2113;--added:#7aa7ff;--added-bg:#16213a;--removed:#ff8a7a;--removed-bg:#341a17;--ok:#5fd39a;--ok-bg:#12291e;
 --check:linear-gradient(45deg,#3a3a40 25%,transparent 25%,transparent 75%,#3a3a40 75%),linear-gradient(45deg,#3a3a40 25%,#222 25%,#222 75%,#3a3a40 75%)}}
-.ts-report[data-theme=dark]{--paper:#121214;--card:#1a1a1e;--ink:#ececef;--ink-2:#a4a5ad;--ink-3:#6f707a;--rule:#2b2b31;--rule-2:#222227;
+.ts-report[data-theme=dark]{--paper:#121214;--card:#1a1a1e;--ink:#ececef;--ink-2:#a4a5ad;--ink-3:#6f707a;--rule:#2b2b31;--rule-2:#222227;--ring:rgb(255 255 255/.16);
 --changed:#f0a54a;--changed-bg:#2c2113;--added:#7aa7ff;--added-bg:#16213a;--removed:#ff8a7a;--removed-bg:#341a17;--ok:#5fd39a;--ok-bg:#12291e;
 --check:linear-gradient(45deg,#3a3a40 25%,transparent 25%,transparent 75%,#3a3a40 75%),linear-gradient(45deg,#3a3a40 25%,#222 25%,#222 75%,#3a3a40 75%)}
 .ts-report *{box-sizing:border-box}
@@ -65,12 +65,12 @@ color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 .ts-cmp{display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:10px;min-width:0}
 .ts-side{display:flex;align-items:center;gap:10px;min-width:0}
 .ts-side .ts-val{font:13px/1.3 var(--mono);overflow-wrap:anywhere;min-width:0}
-.ts-side .ts-val small{display:block;font:11px/1.3 var(--mono);color:var(--ink-3)}
+.ts-side .ts-val small{display:block;font:11px/1.3 var(--mono);color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ts-side.old .ts-val>span{color:var(--ink-2);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--removed) 70%,transparent);text-decoration-thickness:1.5px}
 .ts-side.new .ts-val>span{font-weight:600}
 .ts-arrow{color:var(--ink-3);text-align:center;font:14px/1 var(--mono)}
 .ts-sw{position:relative;flex:none;width:40px;height:40px;border-radius:8px;background:var(--check);background-size:10px 10px;background-position:0 0,5px 5px;box-shadow:inset 0 0 0 1px rgb(0 0 0/.08)}
-.ts-sw::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--c);box-shadow:inset 0 0 0 1px rgb(0 0 0/.1)}
+.ts-sw::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--c);box-shadow:inset 0 0 0 1px var(--ring)}
 .ts-pair{display:flex;flex:none;border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 1px rgb(0 0 0/.08)}
 .ts-dim{flex:none;width:40px;height:40px;display:flex;align-items:center;justify-content:flex-start}
 .ts-dim i{display:block;height:12px;border-radius:3px;background:var(--ink-3);min-width:2px;max-width:40px}
@@ -94,10 +94,11 @@ color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 .ts-ok{display:flex;align-items:center;gap:10px;padding:16px;background:var(--ok-bg);color:var(--ok);border-radius:12px;font-weight:550}
 .ts-foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:12.5px}
 .ts-foot code{font:12px var(--mono);color:var(--ink-2)}
-@media (max-width:720px){.ts-wrap{padding:28px 16px 40px}.ts-title{font-size:26px}
+@container (max-width:760px){.ts-wrap{padding:28px 16px 40px}.ts-title{font-size:26px}
 .ts-stat{min-width:0;flex:1 1 40%}
 .ts-row,.ts-row.single,.ts-row.nomode{grid-template-columns:1fr auto;gap:10px}
-.ts-row .ts-cmp{grid-column:1/-1;grid-template-columns:1fr 16px 1fr}
+.ts-row .ts-cmp{grid-column:1/-1;grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr);gap:8px}
+.ts-row .ts-sw,.ts-row .ts-dim,.ts-row .ts-radius,.ts-row .ts-txt{width:32px;height:32px}.ts-side{gap:8px}
 .ts-row .ts-mode{grid-row:1;grid-column:2;justify-self:end}
 .ts-row .ts-mode.cont{visibility:visible}
 .ts-row .ts-de{grid-column:2;grid-row:1}
@@ -245,6 +246,7 @@ ${result.targets.map(targetSection).join('\n')}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
 <title>${e(result.project)} · tokensync report</title>
 <style>${PAGE_CSS}${REPORT_CSS}</style>
 </head>
