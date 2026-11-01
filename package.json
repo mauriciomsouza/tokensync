@@ -1,0 +1,74 @@
+{
+  "name": "tokensync",
+  "version": "0.1.0",
+  "description": "Catch design-token drift between Figma variables and code before it ships.",
+  "keywords": [
+    "design-tokens",
+    "figma",
+    "figma-variables",
+    "dtcg",
+    "css-variables",
+    "tailwind",
+    "design-systems",
+    "cli",
+    "github-action"
+  ],
+  "license": "MIT",
+  "author": "Mauricio Souza (https://github.com/mauriciomsouza)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mauriciomsouza/tokensync.git"
+  },
+  "type": "module",
+  "bin": {
+    "tokensync": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "example": "node dist/cli.js check --config examples/aurora/tokensync.config.json",
+    "example:report": "node dist/cli.js report --config examples/aurora/tokensync.config.json --out examples/aurora/tokensync-report.html",
+    "render": "node design/render.mjs",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "marked": "^18.1.2",
+    "playwright-core": "^1.64.1",
+    "prettier": "^3.9.10",
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5"
+  }
+}

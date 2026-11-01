@@ -1,0 +1,9 @@
+dist
+site/dist
+node_modules
+package-lock.json
+test/__snapshots__
+examples/**/figma/*.json
+docs/design/screens
+*.html
+CHANGELOG.md

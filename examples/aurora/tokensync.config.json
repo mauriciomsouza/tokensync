@@ -1,0 +1,29 @@
+{
+  "$schema": "../../tokensync.schema.json",
+  "project": "Aurora Design System",
+  "figma": {
+    "file": "figma/variables.json"
+  },
+  "threshold": 1,
+  "targets": [
+    {
+      "format": "css",
+      "path": "src/styles/tokens.css",
+      "modes": {
+        "light": ":root",
+        "dark": "[data-theme=\"dark\"]"
+      },
+      "exclude": ["color.brand.**", "color.neutral.**", "color.green.**", "color.amber.**", "color.red.**", "font.**"]
+    },
+    {
+      "format": "dtcg",
+      "path": "tokens/primitives.tokens.json",
+      "include": ["color.brand.**", "color.neutral.**", "color.green.**", "color.amber.**", "color.red.**", "font.**"]
+    },
+    {
+      "format": "tailwind",
+      "path": "tailwind.theme.json",
+      "include": ["color.brand.**", "space.*", "radius.*"]
+    }
+  ]
+}

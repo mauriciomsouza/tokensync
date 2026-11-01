@@ -1,0 +1,82 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderers > markdown report matches the snapshot 1`] = `
+"<!-- tokensync:report -->
+### ◐ tokensync · Aurora Design System
+
+**Design tokens drifted from Figma.** 9 changed, 4 missing in code, 1 not in Figma · 55 in sync.
+
+| Target | Changed | Missing in code | Not in Figma | In sync |
+| :-- | --: | --: | --: | --: |
+| \`src/styles/tokens.css\` <sub>css</sub> | 4 | 2 | 1 | 16 |
+| \`tokens/primitives.tokens.json\` <sub>dtcg</sub> | 3 | 1 | 0 | 24 |
+| \`tailwind.theme.json\` <sub>tailwind</sub> | 2 | 1 | 0 | 15 |
+
+<details>
+<summary><b>src/styles/tokens.css</b> — 7 differences · modes: light, dark</summary>
+
+**Changed** (4)
+
+| Token | Mode | Code (now) | Figma (expected) | Δ |
+| :-- | :-- | :-- | :-- | --: |
+| \`color.accent.default\` | light | \`#5b3be8\` | \`#6440f0\` <sub>→ color.brand.600</sub> | ΔE 2.1 |
+| \`color.accent.hover\` | dark | \`#c9b8ff\` | \`#e6deff\` <sub>→ color.brand.100</sub> | ΔE 12.1 |
+| \`color.bg.subtle\` | dark | \`#1c1c22\` | \`#18181d\` <sub>→ color.neutral.900</sub> | ΔE 1.4 |
+| \`radius.md\` | all | \`6px\` | \`8px\` | +2px |
+
+**Missing in code** (2)
+
+| Token | Mode | Figma value |
+| :-- | :-- | :-- |
+| \`color.danger\` | light | \`#d23a2d\` <sub>→ color.red.600</sub> |
+|  | dark | \`#ef5a4c\` <sub>→ color.red.500</sub> |
+| \`space.12\` | all | \`48px\` |
+
+**Not in Figma** (1)
+
+| Token | Mode | Code value |
+| :-- | :-- | :-- |
+| \`color.info\` | all | \`#2f80ed\` |
+
+</details>
+
+<details>
+<summary><b>tokens/primitives.tokens.json</b> — 4 differences</summary>
+
+**Changed** (3)
+
+| Token | Code (now) | Figma (expected) | Δ |
+| :-- | :-- | :-- | --: |
+| \`color.brand.700\` | \`#4a2bbf\` | \`#5130cc\` | ΔE 2.3 |
+| \`font.family.sans\` | \`Inter, system-ui, sans-serif\` | \`Inter, ui-sans-serif, system-ui, sans-serif\` | string |
+| \`font.size.xl\` | \`32px\` | \`28px\` | -4px |
+
+**Missing in code** (1)
+
+| Token | Figma value |
+| :-- | :-- |
+| \`color.neutral.950\` | \`#0e0e12\` |
+
+</details>
+
+<details>
+<summary><b>tailwind.theme.json</b> — 3 differences</summary>
+
+**Changed** (2)
+
+| Token | Code (now) | Figma (expected) | Δ |
+| :-- | :-- | :-- | --: |
+| \`color.brand.300\` | \`#a78bfa\` | \`#b9a4ff\` | ΔE 6.9 |
+| \`radius.lg\` | \`10px\` | \`12px\` | +2px |
+
+**Missing in code** (1)
+
+| Token | Figma value |
+| :-- | :-- |
+| \`space.12\` | \`48px\` |
+
+</details>
+
+<sub>Colors compared with CIEDE2000; differences under ΔE 1 are ignored. Run \`npx tokensync sync --write\` to update code from Figma.</sub>
+"
+`;

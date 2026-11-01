@@ -1,0 +1,53 @@
+/**
+ * Aurora design tokens — semantic layer.
+ * Source of truth is the "Aurora / Foundations" Figma file.
+ * Run `npx tokensync check` before editing by hand.
+ */
+
+:root {
+  /* Surfaces */
+  --color-bg-default: #ffffff;
+  --color-bg-subtle: #f7f7f8;
+
+  /* Text */
+  --color-fg-default: #18181d;
+  --color-fg-muted: #5e5e6c; /* rounded by hand, still within ΔE tolerance */
+
+  --color-border-default: #dcdce2;
+
+  /* Accent */
+  --color-accent-default: #5b3be8;
+  --color-accent-hover: #5130cc;
+
+  /* Feedback */
+  --color-success: #1f9d63;
+  --color-warning: #d98a1c;
+  --color-info: #2f80ed; /* added in code only */
+
+  --color-focus-ring: rgb(100 64 240 / 0.4);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+}
+
+[data-theme='dark'] {
+  --color-bg-default: #0e0e12;
+  --color-bg-subtle: #1c1c22;
+  --color-fg-default: #f7f7f8;
+  --color-fg-muted: #9a9aa6;
+  --color-border-default: #2a2a33;
+  --color-accent-default: #b9a4ff;
+  --color-accent-hover: #c9b8ff;
+  --color-focus-ring: rgb(185 164 255 / 0.5);
+}

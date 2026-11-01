@@ -1,0 +1,50 @@
+{
+  "$description": "Aurora primitives (DTCG). Generated from Figma, then edited by hand.",
+  "color": {
+    "$type": "color",
+    "brand": {
+      "50": { "$value": "#f3f0ff" },
+      "100": { "$value": "#e6deff" },
+      "300": { "$value": "#b9a4ff" },
+      "500": { "$value": "#7b5cff" },
+      "600": { "$value": "#6440f0" },
+      "700": { "$value": "#4a2bbf" },
+      "900": { "$value": "#2c1a73" }
+    },
+    "neutral": {
+      "0": { "$value": "#ffffff" },
+      "50": { "$value": "#f7f7f8" },
+      "100": { "$value": "#eeeef1" },
+      "200": { "$value": "#dcdce2" },
+      "400": { "$value": "#9a9aa6" },
+      "600": { "$value": "#5d5d6b" },
+      "800": { "$value": "#2a2a33" },
+      "900": { "$value": "#18181d" }
+    },
+    "green": { "500": { "$value": "#1f9d63" } },
+    "amber": { "500": { "$value": "#d98a1c" } },
+    "red": {
+      "500": { "$value": "#ef5a4c" },
+      "600": { "$value": "#d23a2d" }
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": { "$value": ["Inter", "system-ui", "sans-serif"] },
+      "mono": { "$value": ["JetBrains Mono", "ui-monospace", "monospace"] }
+    },
+    "size": {
+      "$type": "dimension",
+      "sm": { "$value": "14px" },
+      "md": { "$value": "16px" },
+      "lg": { "$value": "20px" },
+      "xl": { "$value": "32px" }
+    },
+    "weight": {
+      "$type": "number",
+      "regular": { "$value": 400 },
+      "semibold": { "$value": 600 }
+    }
+  }
+}
