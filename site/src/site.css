@@ -254,7 +254,7 @@ h2 {
 }
 .pg-grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
   gap: 16px;
   align-items: start;
 }

@@ -2,7 +2,7 @@
 
 exports[`renderers > markdown report matches the snapshot 1`] = `
 "<!-- tokensync:report -->
-### ◐ tokensync · Aurora Design System
+### tokensync · Aurora Design System
 
 **Design tokens drifted from Figma.** 9 changed, 4 missing in code, 1 not in Figma · 55 in sync.
 
@@ -12,7 +12,7 @@ exports[`renderers > markdown report matches the snapshot 1`] = `
 | \`tokens/primitives.tokens.json\` <sub>dtcg</sub> | 3 | 1 | 0 | 24 |
 | \`tailwind.theme.json\` <sub>tailwind</sub> | 2 | 1 | 0 | 15 |
 
-<details>
+<details open>
 <summary><b>src/styles/tokens.css</b> — 7 differences · modes: light, dark</summary>
 
 **Changed** (4)
@@ -40,7 +40,7 @@ exports[`renderers > markdown report matches the snapshot 1`] = `
 
 </details>
 
-<details>
+<details open>
 <summary><b>tokens/primitives.tokens.json</b> — 4 differences</summary>
 
 **Changed** (3)
@@ -59,7 +59,7 @@ exports[`renderers > markdown report matches the snapshot 1`] = `
 
 </details>
 
-<details>
+<details open>
 <summary><b>tailwind.theme.json</b> — 3 differences</summary>
 
 **Changed** (2)

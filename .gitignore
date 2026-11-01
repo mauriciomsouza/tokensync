@@ -9,3 +9,4 @@ coverage/
 examples/**/tokensync-report.html
 .env
 .env.*
+design/.build/

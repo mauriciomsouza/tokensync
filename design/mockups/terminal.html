@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>tokensync · terminal</title>
+    <style>
+      /* Terminal frame for the README screenshot. Palette: "Proof" dark ink (DESIGN_SPEC.md §4). */
+      body {
+        margin: 0;
+        padding: 40px;
+        background: #e9e7e1;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+      .window {
+        background: #141417;
+        border-radius: 12px;
+        box-shadow:
+          0 0 0 1px rgb(0 0 0 / 0.4),
+          0 24px 48px -12px rgb(0 0 0 / 0.35);
+        overflow: hidden;
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 14px;
+        border-bottom: 1px solid #26262c;
+      }
+      .bar i {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #3a3a42;
+      }
+      .bar span {
+        margin-left: 10px;
+        font: 12px ui-monospace, 'JetBrains Mono', Menlo, monospace;
+        color: #7c7d87;
+      }
+      pre {
+        margin: 0;
+        padding: 6px 24px 18px;
+        font: 13.5px/1.6 ui-monospace, 'JetBrains Mono', Menlo, monospace;
+        color: #e6e6ea;
+      }
+      .prompt {
+        color: #7c7d87;
+      }
+      .b {
+        font-weight: 700;
+      }
+      .d {
+        color: #7c7d87;
+      }
+      .red {
+        color: #ff8a7a;
+      }
+      .green {
+        color: #5fd39a;
+      }
+      .yellow {
+        color: #f0b45a;
+      }
+      .blue {
+        color: #7aa7ff;
+      }
+      .cyan {
+        color: #6fd3e0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <div class="bar"><i></i><i></i><i></i><span>aurora — zsh</span></div>
+      <pre><span class="prompt">~/aurora $</span> npx tokensync check
+{{BODY}}<span class="prompt">~/aurora $</span> </pre>
+    </div>
+  </body>
+</html>

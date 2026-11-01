@@ -10,6 +10,8 @@ export interface MarkdownOptions {
   reportUrl?: string;
   /** Max rows per table before collapsing the rest. Default 50. */
   maxRows?: number;
+  /** Expand target sections when there are at most this many differences. Default 25. */
+  openUpTo?: number;
   /** Include the sticky-comment marker. Default true. */
   marker?: boolean;
 }
@@ -84,7 +86,7 @@ export function renderMarkdown(result: DriftResult, opts: MarkdownOptions = {}):
   const out: string[] = [];
   if (opts.marker !== false) out.push(COMMENT_MARKER);
   const drift = result.summary.total > 0;
-  out.push(`### ${drift ? '◐' : '●'} tokensync · ${md(result.project)}`, '');
+  out.push(`### tokensync · ${md(result.project)}`, '');
   out.push(drift ? `**Design tokens drifted from Figma.** ${summaryLine(result)}.` : `**${summaryLine(result)}**`, '');
 
   if (drift) {
@@ -98,10 +100,12 @@ export function renderMarkdown(result: DriftResult, opts: MarkdownOptions = {}):
     out.push('');
   }
 
+  // Expand every section while the comment stays short enough to scan.
+  const openSections = result.summary.total <= (opts.openUpTo ?? 25);
   for (const t of result.targets) {
     if (t.changes.length === 0 && t.notes.length === 0) continue;
     const modes = multiMode(t) ? ` · modes: ${t.modes.join(', ')}` : '';
-    out.push(`<details${result.targets.length === 1 ? ' open' : ''}>`);
+    out.push(`<details${openSections ? ' open' : ''}>`);
     out.push(
       `<summary><b>${md(t.target)}</b> — ${t.changes.length} difference${t.changes.length === 1 ? '' : 's'}${modes}</summary>`,
       '',

@@ -54,10 +54,10 @@ color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;co
 .ts-group>h3 i{width:8px;height:8px;border-radius:2px}
 .ts-group.changed>h3 i{background:var(--changed)}.ts-group.added>h3 i{background:var(--added)}.ts-group.removed>h3 i{background:var(--removed)}
 .ts-group>h3 em{font-style:normal;color:var(--ink-3);font-weight:500}
-.ts-row{display:grid;grid-template-columns:minmax(180px,1.3fr) 64px minmax(0,2.2fr) 84px;align-items:center;gap:16px;padding:12px 16px;border-top:1px solid var(--rule-2)}
+.ts-row{display:grid;grid-template-columns:minmax(150px,1.2fr) 48px minmax(0,2.4fr) 72px;align-items:center;gap:16px;padding:12px 16px;border-top:1px solid var(--rule-2)}
 .ts-group>h3+.ts-row{border-top:0}
 .ts-row.single{grid-template-columns:minmax(180px,1.3fr) minmax(0,2.2fr) 84px}
-.ts-row.nomode{grid-template-columns:minmax(180px,1.3fr) minmax(0,2.2fr) 84px}
+.ts-row.nomode{grid-template-columns:minmax(150px,1.2fr) minmax(0,2.4fr) 72px}
 .ts-name{font:500 13px/1.35 var(--mono);overflow-wrap:anywhere}
 .ts-name small{display:block;font:12px/1.4 var(--sans);color:var(--ink-3);margin-top:2px}
 .ts-mode{font:500 11px/1 var(--mono);color:var(--ink-2);text-transform:lowercase}
@@ -94,7 +94,7 @@ color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;co
 .ts-ok{display:flex;align-items:center;gap:10px;padding:16px;background:var(--ok-bg);color:var(--ok);border-radius:12px;font-weight:550}
 .ts-foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:12.5px}
 .ts-foot code{font:12px var(--mono);color:var(--ink-2)}
-@container (max-width:760px){.ts-wrap{padding:28px 16px 40px}.ts-title{font-size:26px}
+@container (max-width:620px){.ts-wrap{padding:28px 16px 40px}.ts-title{font-size:26px}
 .ts-stat{min-width:0;flex:1 1 40%}
 .ts-row,.ts-row.single,.ts-row.nomode{grid-template-columns:1fr auto;gap:10px}
 .ts-row .ts-cmp{grid-column:1/-1;grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr);gap:8px}
