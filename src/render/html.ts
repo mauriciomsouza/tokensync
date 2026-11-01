@@ -22,7 +22,7 @@ export const REPORT_CSS = `
 .ts-report{--paper:#f7f6f2;--card:#ffffff;--ink:#16161a;--ink-2:#55565e;--ink-3:#8a8b93;--rule:#e4e2dc;--rule-2:#efede8;
 --changed:#b45309;--changed-bg:#fdf3e4;--added:#1d5fd1;--added-bg:#eaf1fd;--removed:#b42318;--removed-bg:#fdecea;--ok:#127a4a;--ok-bg:#e7f5ee;
 --check:linear-gradient(45deg,#d9d7d0 25%,transparent 25%,transparent 75%,#d9d7d0 75%),linear-gradient(45deg,#d9d7d0 25%,#fff 25%,#fff 75%,#d9d7d0 75%);
---ring:rgb(0 0 0/.1);--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--ring:rgb(0 0 0/.1);--sans:ui-sans-serif,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
 color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;container-type:inline-size}
 @media (prefers-color-scheme:dark){.ts-report:not([data-theme=light]){--paper:#121214;--card:#1a1a1e;--ink:#ececef;--ink-2:#a4a5ad;--ink-3:#6f707a;--rule:#2b2b31;--rule-2:#222227;--ring:rgb(255 255 255/.16);

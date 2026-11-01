@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/mauriciomsouza/tokensync/main/tokensync.schema.json",
+  "title": "tokensync config",
+  "type": "object",
+  "required": ["targets"],
+  "additionalProperties": false,
+  "definitions": {
+    "globs": { "type": "array", "items": { "type": "string" } },
+    "include": {
+      "$ref": "#/definitions/globs",
+      "description": "Globs over dot names; only these tokens are compared. `*` = one segment, `**` = any depth."
+    },
+    "exclude": { "$ref": "#/definitions/globs", "description": "Globs over dot names to ignore." },
+    "remBase": { "type": "number", "exclusiveMinimum": 0, "description": "Pixels per rem. Default 16." }
+  },
+  "properties": {
+    "$schema": { "type": "string" },
+    "project": { "type": "string", "default": "Design tokens", "description": "Name shown in reports." },
+    "figma": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string",
+          "description": "Path to a Figma Variables JSON (shape of GET /v1/files/:key/variables/local), relative to the config."
+        },
+        "fileKey": {
+          "type": "string",
+          "description": "Figma file key to fetch live. Requires FIGMA_TOKEN with file_variables:read (Enterprise plans)."
+        },
+        "modes": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Rename Figma modes, e.g. { \"Mode 1\": \"light\" }."
+        },
+        "collections": {
+          "type": "object",
+          "description": "Per-collection options, keyed by collection name.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "prefix": { "type": "string", "description": "Group prefix added to every token in the collection." },
+              "skip": { "type": "boolean", "description": "Ignore this collection." }
+            }
+          }
+        },
+        "unitless": { "$ref": "#/definitions/globs", "description": "FLOAT variables that are plain numbers, not px." },
+        "includeHidden": { "type": "boolean", "description": "Include variables hidden from publishing." }
+      }
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "default": 1,
+      "description": "CIEDE2000 distance under which two colors count as equal."
+    },
+    "rename": {
+      "type": "array",
+      "description": "Regex rename rules applied to Figma dot names, in order.",
+      "items": {
+        "type": "object",
+        "required": ["match", "replace"],
+        "additionalProperties": false,
+        "properties": { "match": { "type": "string" }, "replace": { "type": "string" } }
+      }
+    },
+    "include": { "$ref": "#/definitions/include" },
+    "exclude": { "$ref": "#/definitions/exclude" },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["format", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "format": { "const": "css" },
+              "path": { "type": "string" },
+              "prefix": { "type": "string", "description": "Custom property prefix: \"ds\" → --ds-color-bg." },
+              "modes": {
+                "type": "object",
+                "additionalProperties": { "type": "string" },
+                "description": "Mode → selector or at-rule, base mode first. e.g. { \"light\": \":root\", \"dark\": \"[data-theme='dark']\" } or \"@media (prefers-color-scheme: dark)\"."
+              },
+              "remBase": { "$ref": "#/definitions/remBase" },
+              "include": { "$ref": "#/definitions/include" },
+              "exclude": { "$ref": "#/definitions/exclude" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["format", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "format": { "const": "dtcg" },
+              "path": {
+                "oneOf": [{ "type": "string" }, { "type": "object", "additionalProperties": { "type": "string" } }],
+                "description": "One file for every mode, or { mode: file } for one file per mode."
+              },
+              "mode": {
+                "type": "string",
+                "description": "Mode a single file represents. Default: the first Figma mode."
+              },
+              "include": { "$ref": "#/definitions/include" },
+              "exclude": { "$ref": "#/definitions/exclude" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["format", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "format": { "const": "tailwind" },
+              "path": { "type": "string" },
+              "mode": { "type": "string", "description": "Mode the theme represents. Default: the first Figma mode." },
+              "groups": {
+                "type": "object",
+                "additionalProperties": { "type": "string" },
+                "description": "Tailwind theme key → token name prefix. Default maps colors→color, spacing→space, borderRadius→radius, fontFamily→font.family, fontSize→font.size, …"
+              },
+              "remBase": { "$ref": "#/definitions/remBase" },
+              "include": { "$ref": "#/definitions/include" },
+              "exclude": { "$ref": "#/definitions/exclude" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -33,6 +33,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "tokensync.schema.json",
     "README.md",
     "LICENSE"
   ],
