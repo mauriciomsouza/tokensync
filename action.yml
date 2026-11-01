@@ -1,0 +1,149 @@
+name: tokensync
+description: Catch design-token drift between Figma variables and code. Posts a sticky PR comment and can open a sync PR.
+author: Mauricio Souza
+branding:
+  icon: git-pull-request
+  color: purple
+
+inputs:
+  config:
+    description: Path to tokensync.config.json (relative to working-directory).
+    default: tokensync.config.json
+  working-directory:
+    description: Directory to run in.
+    default: .
+  figma-file-key:
+    description: Figma file key to fetch variables from. Leave empty to use figma.file / figma.fileKey from the config.
+    default: ''
+  figma-token:
+    description: Figma personal access token with file_variables:read. Pass it from a secret; it is never logged.
+    default: ''
+  threshold:
+    description: Override the CIEDE2000 color threshold.
+    default: ''
+  comment:
+    description: Post or update a single sticky comment with the Markdown report on pull requests.
+    default: 'true'
+  fail-on-drift:
+    description: Fail the job when drift is found.
+    default: 'true'
+  sync-pr:
+    description: When drift is found, run `sync --write` and open or update a "sync tokens" pull request.
+    default: 'false'
+  sync-branch:
+    description: Branch used for the sync pull request.
+    default: tokensync/sync
+  prune:
+    description: With sync-pr, also remove tokens that are not in Figma.
+    default: 'false'
+  github-token:
+    description: Token used to comment and open pull requests.
+    default: ${{ github.token }}
+  version:
+    description: tokensync version to run (npm dist-tag or semver).
+    default: latest
+
+outputs:
+  drift:
+    description: '"true" when any token drifted.'
+    value: ${{ steps.check.outputs.drift }}
+  changed:
+    description: Number of changed tokens.
+    value: ${{ steps.check.outputs.changed }}
+  added:
+    description: Number of tokens missing in code.
+    value: ${{ steps.check.outputs.added }}
+  removed:
+    description: Number of tokens not in Figma.
+    value: ${{ steps.check.outputs.removed }}
+  report-path:
+    description: Path of the generated HTML report.
+    value: ${{ steps.check.outputs.report-path }}
+  sync-pr-url:
+    description: URL of the sync pull request, when one was opened or updated.
+    value: ${{ steps.sync.outputs.url }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - id: check
+      name: Check for drift
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        FIGMA_TOKEN: ${{ inputs.figma-token }}
+        TS_VERSION: ${{ inputs.version }}
+        TS_CONFIG: ${{ inputs.config }}
+        TS_FILE_KEY: ${{ inputs.figma-file-key }}
+        TS_THRESHOLD: ${{ inputs.threshold }}
+      run: |
+        set +e
+        if [ -n "$FIGMA_TOKEN" ]; then echo "::add-mask::$FIGMA_TOKEN"; fi
+        args=(--config "$TS_CONFIG")
+        [ -n "$TS_FILE_KEY" ] && args+=(--file-key "$TS_FILE_KEY")
+        [ -n "$TS_THRESHOLD" ] && args+=(--threshold "$TS_THRESHOLD")
+        out="$RUNNER_TEMP/tokensync"
+        mkdir -p "$out"
+        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --json --no-fail --out "$out/result.json" > /dev/null || exit 2
+        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --markdown --no-fail --out "$out/report.md" > /dev/null || exit 2
+        npx --yes "tokensync@$TS_VERSION" report "${args[@]}" --out "$out/report.html" --no-color || exit 2
+        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --no-color --no-fail
+        node -e '
+          const r = require(process.argv[1]); const s = r.summary;
+          const o = [`drift=${s.total > 0}`, `changed=${s.changed}`, `added=${s.added}`, `removed=${s.removed}`, `report-path=${process.argv[2]}`];
+          require("fs").appendFileSync(process.env.GITHUB_OUTPUT, o.join("\n") + "\n");
+        ' "$out/result.json" "$out/report.html"
+        cat "$out/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload HTML report
+      uses: actions/upload-artifact@v4
+      with:
+        name: tokensync-report
+        path: ${{ runner.temp }}/tokensync/report.html
+        if-no-files-found: ignore
+
+    - name: Post sticky comment
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        TS_REPORT: ${{ runner.temp }}/tokensync/report.md
+        TS_DRIFT: ${{ steps.check.outputs.drift }}
+        TS_PR: ${{ github.event.pull_request.number }}
+        TS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: node "$GITHUB_ACTION_PATH/action/comment.mjs"
+
+    - id: sync
+      name: Open sync pull request
+      if: inputs.sync-pr == 'true' && steps.check.outputs.drift == 'true' && github.event_name != 'pull_request'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        FIGMA_TOKEN: ${{ inputs.figma-token }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        TS_VERSION: ${{ inputs.version }}
+        TS_CONFIG: ${{ inputs.config }}
+        TS_FILE_KEY: ${{ inputs.figma-file-key }}
+        TS_THRESHOLD: ${{ inputs.threshold }}
+        TS_PRUNE: ${{ inputs.prune }}
+        TS_BRANCH: ${{ inputs.sync-branch }}
+        TS_REPORT: ${{ runner.temp }}/tokensync/report.md
+      run: |
+        set -euo pipefail
+        args=(--config "$TS_CONFIG" --write)
+        [ -n "$TS_FILE_KEY" ] && args+=(--file-key "$TS_FILE_KEY")
+        [ -n "$TS_THRESHOLD" ] && args+=(--threshold "$TS_THRESHOLD")
+        [ "$TS_PRUNE" = "true" ] && args+=(--prune)
+        npx --yes "tokensync@$TS_VERSION" sync "${args[@]}" --no-color
+        node "$GITHUB_ACTION_PATH/action/sync-pr.mjs"
+
+    - name: Fail on drift
+      if: inputs.fail-on-drift == 'true' && steps.check.outputs.drift == 'true'
+      shell: bash
+      run: |
+        echo "::error title=Design tokens drifted::${{ steps.check.outputs.changed }} changed, ${{ steps.check.outputs.added }} missing in code, ${{ steps.check.outputs.removed }} not in Figma. Run 'npx tokensync sync --write'."
+        exit 1

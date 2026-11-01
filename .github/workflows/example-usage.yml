@@ -1,0 +1,33 @@
+# Example: how a design-system repo would use tokensync.
+# Copy this into your own repository; it is not run here (workflow_dispatch only)
+# because this repo has no real Figma file.
+name: Design tokens
+
+on:
+  # In your repo, replace workflow_dispatch with:
+  # pull_request:
+  #   paths: ['tokens/**', 'src/styles/**', 'tokensync.config.json']
+  # schedule:
+  #   - cron: '17 9 * * 1-5'   # weekdays, catch changes made in Figma
+  workflow_dispatch:
+
+permissions:
+  contents: write # sync-pr pushes a branch
+  pull-requests: write # sticky comment and sync PR
+
+jobs:
+  tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # On pull requests: comment with the drift report and fail the check.
+      # On schedule: open or update a "Sync design tokens from Figma" PR.
+      - uses: mauriciomsouza/tokensync@v0
+        with:
+          config: tokensync.config.json
+          figma-file-key: ${{ vars.FIGMA_FILE_KEY }}
+          figma-token: ${{ secrets.FIGMA_TOKEN }}
+          comment: true
+          fail-on-drift: ${{ github.event_name == 'pull_request' }}
+          sync-pr: ${{ github.event_name != 'pull_request' }}
