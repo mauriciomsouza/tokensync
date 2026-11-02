@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>tokensync · concept poster</title>
+    <link rel="stylesheet" href="poster.css" />
+    <style>
+      h1 {
+        margin-top: 80px !important;
+        font-size: 104px;
+      }
+      .sub {
+        margin-top: 30px;
+        max-width: 880px;
+      }
+      .split {
+        position: absolute;
+        left: 50%;
+        top: 600px;
+        width: 420px;
+        height: 420px;
+        margin-left: -210px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #5b3be8 50%, #6440f0 50%);
+        box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+      }
+      .seam {
+        position: absolute;
+        left: 539.5px;
+        top: 576px;
+        width: 1px;
+        height: 468px;
+        background: var(--ink);
+        opacity: 0.55;
+      }
+      .reg {
+        position: absolute;
+        left: 540px;
+        top: 810px;
+        width: 0;
+        height: 0;
+      }
+      .side {
+        position: absolute;
+        top: 742px;
+        width: 220px;
+      }
+      .side.l {
+        left: 72px;
+        text-align: left;
+      }
+      .side.r {
+        right: 72px;
+        text-align: right;
+      }
+      .side .label {
+        margin-bottom: 14px;
+      }
+      .side .hex {
+        font-family: var(--mono);
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .side.l .hex {
+        color: var(--ink-2);
+        text-decoration: line-through;
+        text-decoration-color: var(--removed);
+        text-decoration-thickness: 2px;
+      }
+      .side .tok {
+        margin-top: 10px;
+        font-family: var(--mono);
+        font-size: 18px;
+        color: var(--ink-2);
+      }
+      .tick {
+        position: absolute;
+        top: 810px;
+        height: 1px;
+        background: var(--ink-3);
+      }
+      .scale {
+        position: absolute;
+        left: 72px;
+        right: 72px;
+        top: 1092px;
+      }
+      .scale .bar {
+        position: relative;
+        height: 10px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, var(--ok) 0 6.67%, #e9a24b 6.67% 66.67%, var(--removed) 66.67% 100%);
+        opacity: 0.9;
+      }
+      .scale .pin {
+        position: absolute;
+        top: -44px;
+        transform: translateX(-50%);
+      }
+      .scale .dot {
+        position: absolute;
+        top: -7px;
+        width: 24px;
+        height: 24px;
+        margin-left: -12px;
+        border-radius: 50%;
+        background: var(--card);
+        border: 4px solid var(--ink);
+      }
+      .scale .ticks {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 14px;
+        font-family: var(--mono);
+        font-size: 17px;
+        color: var(--ink-2);
+      }
+      .scale .ticks span {
+        position: absolute;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="poster">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>
+          tokensync
+        </div>
+        <div class="eyebrow">CIEDE2000</div>
+      </header>
+
+      <h1 class="display">Your eyes miss it.<br />ΔE doesn’t.</h1>
+      <p class="sub">
+        Colors are compared the way people see them. tokensync flags drift a glance can’t, and
+        ignores what <b>nobody can see</b>.
+      </p>
+
+      <div class="split" aria-hidden="true"></div>
+      <div class="seam"></div>
+
+      <div class="side l">
+        <div class="label">Code · now</div>
+        <div class="hex">#5b3be8</div>
+        <div class="tok">tokens.css</div>
+      </div>
+      <div class="side r">
+        <div class="label">Figma · expected</div>
+        <div class="hex">#6440f0</div>
+        <div class="tok">color.brand.600</div>
+      </div>
+
+      <div class="scale">
+        <div class="bar">
+          <div class="pin" style="left: 14%"><span class="badge changed">ΔE 2.1</span></div>
+          <div class="dot" style="left: 14%"></div>
+        </div>
+        <div class="ticks" style="position: relative; height: 24px">
+          <span style="left: 0; transform: none">0</span>
+          <span style="left: 6.67%; transform: translateX(-5px)">1 · threshold</span>
+          <span style="left: 66.67%; transform: translateX(-11px)">10 · obvious</span>
+          <span style="right: 0; left: auto; transform: none">15+</span>
+        </div>
+        <div class="label" style="margin-top: 26px; text-transform: none; letter-spacing: 0">color.accent.default · light mode · Aurora, a fictional design system</div>
+      </div>
+
+      <footer class="bottom">
+        <div class="left">
+          <span class="tag"><i></i>Open source · free</span>
+          <span class="url">mauriciomsouza.github.io/tokensync</span>
+        </div>
+        <div class="sig">
+          <div>
+            <div class="who">Mauricio Souza</div>
+            <div class="role">Design Engineer</div>
+          </div>
+          <div class="monogram">MS</div>
+        </div>
+      </footer>
+    </section>
+  </body>
+</html>

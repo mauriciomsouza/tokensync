@@ -1,0 +1,306 @@
+/*
+ * LinkedIn posters, 1080x1350 (4:5). Shared frame used across Mauricio Souza's projects:
+ * 72px side margins, 64px top, footer on a 52px baseline, one signature in the bottom-right.
+ * Project tokens come from docs/design/DESIGN_SPEC.md ("Proof"): warm proof paper, ink,
+ * four state colors and nothing decorative. Crop marks frame every sheet, like a print proof.
+ *
+ * The report itself uses system fonts; posters are images, so they embed Inter and
+ * JetBrains Mono (SIL OFL, see fonts/) to render the same everywhere.
+ */
+@font-face {
+  font-family: 'Inter Poster';
+  src: url('fonts/inter-latin-wght.woff2') format('woff2');
+  font-weight: 100 900;
+}
+@font-face {
+  font-family: 'JetBrains Mono Poster';
+  src: url('fonts/jetbrains-mono-latin-wght.woff2') format('woff2');
+  font-weight: 100 800;
+}
+
+:root {
+  --paper: #f7f6f2;
+  --card: #ffffff;
+  --ink: #16161a;
+  --ink-2: #55565e;
+  --ink-3: #8a8b93;
+  --rule: #e4e2dc;
+  --rule-2: #efede8;
+  --changed: #b45309;
+  --changed-bg: #fdf3e4;
+  --added: #1d5fd1;
+  --added-bg: #eaf1fd;
+  --removed: #b42318;
+  --removed-bg: #fdecea;
+  --ok: #127a4a;
+  --ok-bg: #e7f5ee;
+  --sans: 'Inter Poster', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'JetBrains Mono Poster', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@page {
+  size: 1080px 1350px;
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ---------- frame ---------- */
+.poster {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  padding: 64px 72px 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-feature-settings: 'cv11', 'ss03';
+  break-after: page;
+  isolation: isolate;
+}
+.poster > * {
+  position: relative;
+  z-index: 2;
+}
+.poster::after {
+  /* paper tooth */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .42  0 0 0 0 .38  0 0 0 .9 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+}
+/* crop marks in the four corners */
+.marks {
+  position: absolute !important;
+  inset: 0;
+  z-index: 1 !important;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--ink-3), var(--ink-3)) 0 28px / 22px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) 28px 0 / 1px 22px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) 100% 28px / 22px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) calc(100% - 28px) 0 / 1px 22px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) 0 calc(100% - 28px) / 22px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) 28px 100% / 1px 22px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) 100% calc(100% - 28px) / 22px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) calc(100% - 28px) 100% / 1px 22px no-repeat;
+  opacity: 0.7;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 31px;
+  font-weight: 640;
+  letter-spacing: -0.025em;
+}
+.wordmark svg {
+  width: 34px;
+  height: 34px;
+}
+.eyebrow,
+.counter {
+  font-family: var(--mono);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.counter {
+  letter-spacing: 0.04em;
+}
+.counter b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.bottom {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 52px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+}
+.bottom .left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+  font-size: 18px;
+  font-weight: 560;
+  white-space: nowrap;
+}
+.tag i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+.url {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.sig {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: right;
+}
+.sig .who {
+  font-size: 18px;
+  font-weight: 620;
+  line-height: 1.2;
+}
+.sig .role {
+  font-size: 16px;
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+.monogram {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  border: 1.5px solid var(--ink);
+  font-size: 17px;
+  font-weight: 680;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- type ---------- */
+.display {
+  margin: 0;
+  font-weight: 680;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.sub {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1.34;
+  letter-spacing: -0.012em;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.sub b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.mono {
+  font-family: var(--mono);
+}
+.muted {
+  color: #9a9aa2;
+}
+.label {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ---------- UI crops ---------- */
+.crop {
+  position: relative;
+  overflow: hidden;
+  width: calc(var(--w) * var(--k) * 1px);
+  height: calc(var(--h) * var(--k) * 1px);
+}
+.crop > img {
+  position: absolute;
+  max-width: none;
+  width: calc(var(--iw) * var(--k) * 1px);
+  left: calc(var(--x) * var(--k) * -1px);
+  top: calc(var(--y) * var(--k) * -1px);
+}
+.sheet {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.03),
+    0 30px 60px -28px rgb(40 30 10 / 0.28),
+    0 12px 24px -16px rgb(40 30 10 / 0.18);
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 24px 48px -30px rgb(40 30 10 / 0.3);
+}
+
+/* state badge, as in the report */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.badge.changed {
+  color: var(--changed);
+  background: var(--changed-bg);
+}
+.badge.removed {
+  color: var(--removed);
+  background: var(--removed-bg);
+}
+.badge.ok {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.badge.added {
+  color: var(--added);
+  background: var(--added-bg);
+}
+.sw {
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+}

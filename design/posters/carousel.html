@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>tokensync · LinkedIn carousel</title>
+    <link rel="stylesheet" href="poster.css" />
+    <style>
+      .kicker {
+        font-size: 19px;
+        margin-top: 92px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .kicker i {
+        width: 14px;
+        height: 14px;
+        background: var(--changed);
+      }
+      .kicker + .display {
+        margin-top: 24px;
+      }
+      h2.display {
+        font-size: 86px;
+        line-height: 1.02;
+      }
+      .sub {
+        margin-top: 30px;
+        font-size: 31px;
+        max-width: 900px;
+      }
+      .visual {
+        position: absolute;
+        left: 72px;
+        right: 72px;
+        top: 660px;
+        bottom: 130px;
+      }
+      .swipe {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 19px;
+        font-weight: 600;
+      }
+      .swipe .arrow {
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      /* 1 */
+      .s1 .display {
+        margin-top: 130px;
+        font-size: 150px;
+        line-height: 0.92;
+      }
+      .tokcard {
+        position: absolute;
+        width: 640px;
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        padding: 24px;
+      }
+      .tokcard .sw {
+        width: 120px;
+        height: 120px;
+        border-radius: 16px;
+        flex: none;
+      }
+      .tokcard .src {
+        font-family: var(--mono);
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-2);
+      }
+      .tokcard .val {
+        margin-top: 10px;
+        font-family: var(--mono);
+        font-size: 24px;
+        line-height: 1.35;
+        color: var(--ink);
+      }
+      .tokcard .val b {
+        font-weight: 650;
+      }
+
+      /* 2 */
+      .drift svg {
+        width: 936px;
+        height: 330px;
+        overflow: visible;
+      }
+
+      /* 3 */
+      .flow {
+        display: grid;
+        grid-template-columns: 250px 120px 1fr;
+        align-items: center;
+        gap: 0;
+      }
+      .node {
+        padding: 22px 22px;
+      }
+      .node .t {
+        font-size: 24px;
+        font-weight: 640;
+        letter-spacing: -0.01em;
+      }
+      .node .d {
+        margin-top: 6px;
+        font-family: var(--mono);
+        font-size: 16px;
+        color: var(--ink-2);
+        line-height: 1.5;
+      }
+      .targets {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .target {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+      }
+      .target .p {
+        font-family: var(--mono);
+        font-size: 19px;
+        font-weight: 600;
+      }
+      .target .f {
+        margin-top: 4px;
+        font-family: var(--mono);
+        font-size: 15px;
+        color: var(--ink-2);
+      }
+      .hub {
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 100%;
+      }
+      .outputs {
+        margin-top: 40px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .pill {
+        height: 50px;
+        padding: 0 20px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1.5px solid var(--ink);
+        font-size: 21px;
+        font-weight: 560;
+        background: var(--card);
+      }
+
+      /* 4 */
+      .rows {
+        display: flex;
+        flex-direction: column;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 64px 40px 64px 150px;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 0;
+        border-top: 1px solid var(--rule);
+      }
+      .row:last-child {
+        border-bottom: 1px solid var(--rule);
+      }
+      .row .n {
+        font-family: var(--mono);
+        font-size: 22px;
+      }
+      .row .n small {
+        display: block;
+        font-size: 16px;
+        color: var(--ink-2);
+        margin-top: 4px;
+      }
+      .row .sw {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+      }
+      .row .ar {
+        text-align: center;
+        color: var(--ink-2);
+        font-size: 24px;
+      }
+      .row .badge {
+        justify-self: end;
+      }
+
+      /* 6 */
+      .diffcard {
+        overflow: hidden;
+        padding: 0;
+      }
+      .diffcard .file {
+        font-family: var(--mono);
+        font-size: 17px;
+        color: var(--ink-2);
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--rule);
+        display: flex;
+        justify-content: space-between;
+      }
+      .diffcard .l {
+        font-family: var(--mono);
+        font-size: 21px;
+        line-height: 1;
+        padding: 9px 24px;
+        white-space: pre;
+        color: var(--ink-2);
+      }
+      .diffcard .del {
+        background: var(--removed-bg);
+        color: var(--removed);
+      }
+      .diffcard .add {
+        background: var(--ok-bg);
+        color: var(--ok);
+        font-weight: 600;
+      }
+      .facts3 {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .facts3 .card {
+        padding: 20px 22px;
+      }
+      .facts3 .k {
+        font-family: var(--mono);
+        font-size: 20px;
+        font-weight: 650;
+      }
+      .facts3 .v {
+        margin-top: 6px;
+        font-size: 19px;
+        line-height: 1.35;
+        color: var(--ink-2);
+      }
+
+      /* 7 */
+      .s7 .display {
+        margin-top: 150px;
+        font-size: 120px;
+      }
+      .s7 .big-url {
+        margin-top: 40px;
+        font-family: var(--mono);
+        font-size: 36px;
+        letter-spacing: -0.01em;
+      }
+      .s7 .big-url span {
+        background: linear-gradient(transparent 62%, #f6d9ad 62%);
+      }
+      .s7 .facts {
+        margin-top: 34px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .s7 .fact {
+        height: 46px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--rule);
+        background: var(--card);
+        font-size: 20px;
+        color: var(--ink-2);
+      }
+      .s7 .play {
+        position: absolute;
+        left: 150px;
+        top: 760px;
+        transform: rotate(-2deg);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1 · cover -->
+    <section class="poster s1">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>1</b>/7</div>
+      </header>
+      <h2 class="display">Which hex is right?</h2>
+      <div class="card tokcard" style="left: 72px; top: 700px; transform: rotate(-1.5deg)">
+        <span class="sw" style="background: #5b3be8"></span>
+        <div>
+          <div class="src">Code · tokens.css</div>
+          <div class="val">--color-accent-default:<br /><b>#5b3be8</b>;</div>
+        </div>
+      </div>
+      <div class="card tokcard" style="left: 368px; top: 930px; transform: rotate(1.5deg)">
+        <span class="sw" style="background: #6440f0"></span>
+        <div>
+          <div class="src">Figma · Aurora / Foundations</div>
+          <div class="val">color.accent.default<br />= <b>#6440f0</b></div>
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="swipe">Swipe <span class="arrow">→</span></span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 2 · problem -->
+    <section class="poster s2">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>2</b>/7</div>
+      </header>
+      <div class="label kicker"><i style="background: var(--removed)"></i>The problem</div>
+      <h2 class="display">Two sources of truth drift apart.</h2>
+      <p class="sub">A designer changes a color in Figma. Nobody updates the CSS. Months later, reviews start with “which hex is right?”</p>
+      <div class="visual drift">
+        <svg viewBox="0 0 936 330" aria-hidden="true">
+          <g font-family="JetBrains Mono Poster, monospace" font-size="20">
+            <!-- figma line -->
+            <path d="M0 250 H160 C 210 250, 210 120, 270 120 H590 C 640 120, 640 40, 700 40 H936" fill="none" stroke="#16161a" stroke-width="4" />
+            <!-- code line -->
+            <path d="M0 250 H936" fill="none" stroke="#8a8b93" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" />
+            <text x="0" y="226" fill="#16161a" font-weight="650" letter-spacing="1.2">FIGMA</text>
+            <text x="0" y="292" fill="#55565e" font-weight="650" letter-spacing="1.2">CODE</text>
+            <!-- change markers -->
+            <circle cx="270" cy="120" r="9" fill="#f7f6f2" stroke="#b45309" stroke-width="4" />
+            <text x="288" y="102" fill="#16161a">color.accent → #6440f0</text>
+            <circle cx="700" cy="40" r="9" fill="#f7f6f2" stroke="#b45309" stroke-width="4" />
+            <text x="718" y="22" fill="#16161a">radius.md → 8px</text>
+            <!-- code still -->
+            <text x="270" y="290" fill="#55565e">still #5b3be8</text>
+            <text x="700" y="290" fill="#55565e">still 6px</text>
+            <!-- gap bracket -->
+            <path d="M920 52 V238" stroke="#b42318" stroke-width="2" />
+            <path d="M912 52 H928 M912 238 H928" stroke="#b42318" stroke-width="2" />
+          </g>
+        </svg>
+        <div style="position: absolute; right: 36px; top: 110px; text-align: right">
+          <span class="badge removed" style="font-size: 22px; height: 46px">14 tokens drifted</span>
+        </div>
+        <div class="label" style="margin-top: 48px; text-transform: none; letter-spacing: 0">From the Aurora example: 9 changed, 4 missing in code, 1 not in Figma.</div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="url">mauriciomsouza.github.io/tokensync</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 3 · how it works -->
+    <section class="poster s3">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>3</b>/7</div>
+      </header>
+      <div class="label kicker"><i style="background: var(--added)"></i>How it works</div>
+      <h2 class="display">One check. Every format you ship.</h2>
+      <p class="sub">Figma variables are normalized once, then compared per mode with each target in your repo.</p>
+      <div class="visual">
+        <div class="flow">
+          <div class="card node">
+            <div class="t">Figma variables</div>
+            <div class="d">REST API or<br />exported JSON</div>
+          </div>
+          <div class="hub">
+            <svg width="120" height="330" viewBox="0 0 120 330" aria-hidden="true">
+              <path d="M0 165 H44" stroke="#16161a" stroke-width="2" />
+              <path d="M76 165 C 96 165, 96 48, 120 48 M76 165 H120 M76 165 C 96 165, 96 282, 120 282" fill="none" stroke="#16161a" stroke-width="2" />
+              <circle cx="60" cy="165" r="16" fill="#f7f6f2" stroke="#16161a" stroke-width="3" />
+              <path d="M60 149 a16 16 0 0 1 0 32 z" fill="#16161a" />
+            </svg>
+          </div>
+          <div class="targets">
+            <div class="card target"><div><div class="p">src/styles/tokens.css</div><div class="f">CSS custom properties · light / dark</div></div><span class="badge changed">7 diffs</span></div>
+            <div class="card target"><div><div class="p">primitives.tokens.json</div><div class="f">W3C design tokens (DTCG)</div></div><span class="badge changed">4 diffs</span></div>
+            <div class="card target"><div><div class="p">tailwind.theme.json</div><div class="f">Tailwind theme</div></div><span class="badge changed">3 diffs</span></div>
+          </div>
+        </div>
+        <div class="outputs">
+          <span class="label" style="margin-right: 8px">Output</span>
+          <span class="pill">Terminal</span><span class="pill">HTML report</span><span class="pill">PR comment</span><span class="pill">JSON</span>
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="url">mauriciomsouza.github.io/tokensync</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 4 · key detail: perceptual -->
+    <section class="poster s4">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>4</b>/7</div>
+      </header>
+      <div class="label kicker"><i></i>The design decision</div>
+      <h2 class="display">Compare color the way eyes do.</h2>
+      <p class="sub">Not hex strings: distance in CIELAB with CIEDE2000. Under ΔE 1 counts as in sync. Above it, you see <b>by how much</b>.</p>
+      <div class="visual" style="top: 640px">
+        <div class="rows">
+          <div class="row"><div class="n">color.bg.subtle<small>dark</small></div><span class="sw" style="background: #1c1c22"></span><span class="ar">→</span><span class="sw" style="background: #18181d"></span><span class="badge changed">ΔE 1.4</span></div>
+          <div class="row"><div class="n">color.accent.default<small>light</small></div><span class="sw" style="background: #5b3be8"></span><span class="ar">→</span><span class="sw" style="background: #6440f0"></span><span class="badge changed">ΔE 2.1</span></div>
+          <div class="row"><div class="n">color.brand.300<small>tailwind</small></div><span class="sw" style="background: #a78bfa"></span><span class="ar">→</span><span class="sw" style="background: #b9a4ff"></span><span class="badge changed">ΔE 6.9</span></div>
+          <div class="row"><div class="n">color.accent.hover<small>dark</small></div><span class="sw" style="background: #c9b8ff"></span><span class="ar">→</span><span class="sw" style="background: #e6deff"></span><span class="badge removed">ΔE 12.1</span></div>
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="url">mauriciomsouza.github.io/tokensync</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 5 · PR comment -->
+    <section class="poster s5">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>5</b>/7</div>
+      </header>
+      <div class="label kicker"><i style="background: var(--ok)"></i>In your pull requests</div>
+      <h2 class="display">One comment. Always current.</h2>
+      <p class="sub">The GitHub Action updates a single report on each PR and fails the check on drift. On a schedule, it opens the sync PR for you.</p>
+      <div class="visual">
+        <div class="sheet" style="width: 936px">
+          <div class="crop" style="--x: 128; --y: 18; --w: 1744; --h: 880; --iw: 1896; --k: 0.5367">
+            <img src="../../docs/design/screens/pr-comment.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="url">mauriciomsouza.github.io/tokensync</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 6 · different: minimal writes -->
+    <section class="poster s6">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>6</b>/7</div>
+      </header>
+      <div class="label kicker"><i style="background: var(--ink)"></i>What makes it different</div>
+      <h2 class="display">Sync changes values. Nothing else.</h2>
+      <p class="sub">Comments, formatting, key order and value syntax stay exactly as you wrote them. Only the drifted values move.</p>
+      <div class="visual">
+        <div class="card diffcard">
+          <div class="file"><span>src/styles/tokens.css</span><span>tokensync sync --write</span></div>
+          <div class="l">   /* Accent */</div>
+          <div class="l del"> - --color-accent-default: #5b3be8;</div>
+          <div class="l add"> + --color-accent-default: #6440f0;</div>
+          <div class="l">   --color-accent-hover: #5130cc;</div>
+          <div class="l">   …</div>
+          <div class="l">   /* Radius */</div>
+          <div class="l del"> - --radius-md: 6px;</div>
+          <div class="l add"> + --radius-md: 8px;</div>
+        </div>
+        <div class="facts3">
+          <div class="card"><div class="k">Dry run</div><div class="v">by default. <span class="mono">--write</span> applies.</div></div>
+          <div class="card"><div class="k">Exit codes</div><div class="v">0 in sync · 1 drift<br />2 config error</div></div>
+          <div class="card"><div class="k">Token-safe</div><div class="v">Figma token never logged or printed.</div></div>
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="url">mauriciomsouza.github.io/tokensync</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+
+    <!-- 7 · CTA -->
+    <section class="poster s7">
+      <div class="marks"></div>
+      <header class="top">
+        <div class="wordmark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#16161a" stroke-width="3" /><path d="M16 3a13 13 0 0 1 0 26z" fill="#16161a" /></svg>tokensync</div>
+        <div class="counter"><b>7</b>/7</div>
+      </header>
+      <h2 class="display">Try the live demo.</h2>
+      <div class="big-url">mauriciomsouza.github.io/<span>tokensync</span></div>
+      <div class="facts">
+        <span class="fact">Paste Figma JSON, see the report</span>
+        <span class="fact">Runs in your browser</span>
+        <span class="fact">MIT license</span>
+      </div>
+      <div class="sheet play">
+        <div class="crop" style="--x: 1150; --y: 380; --w: 1430; --h: 740; --iw: 2880; --k: 0.62">
+          <img src="../../docs/design/screens/playground.png" alt="" />
+        </div>
+      </div>
+      <footer class="bottom">
+        <div class="left"><span class="tag"><i></i>Open source · free</span></div>
+        <div class="sig"><div><div class="who">Mauricio Souza</div><div class="role">Design Engineer</div></div><div class="monogram">MS</div></div>
+      </footer>
+    </section>
+  </body>
+</html>
