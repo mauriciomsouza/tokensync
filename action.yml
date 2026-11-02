@@ -88,10 +88,10 @@ runs:
         [ -n "$TS_THRESHOLD" ] && args+=(--threshold "$TS_THRESHOLD")
         out="$RUNNER_TEMP/tokensync"
         mkdir -p "$out"
-        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --json --no-fail --out "$out/result.json" > /dev/null || exit 2
-        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --markdown --no-fail --out "$out/report.md" > /dev/null || exit 2
-        npx --yes "tokensync@$TS_VERSION" report "${args[@]}" --out "$out/report.html" --no-color || exit 2
-        npx --yes "tokensync@$TS_VERSION" check "${args[@]}" --no-color --no-fail
+        npx --yes "tokensync-cli@$TS_VERSION" check "${args[@]}" --json --no-fail --out "$out/result.json" > /dev/null || exit 2
+        npx --yes "tokensync-cli@$TS_VERSION" check "${args[@]}" --markdown --no-fail --out "$out/report.md" > /dev/null || exit 2
+        npx --yes "tokensync-cli@$TS_VERSION" report "${args[@]}" --out "$out/report.html" --no-color || exit 2
+        npx --yes "tokensync-cli@$TS_VERSION" check "${args[@]}" --no-color --no-fail
         node -e '
           const r = require(process.argv[1]); const s = r.summary;
           const o = [`drift=${s.total > 0}`, `changed=${s.changed}`, `added=${s.added}`, `removed=${s.removed}`, `report-path=${process.argv[2]}`];
@@ -138,12 +138,12 @@ runs:
         [ -n "$TS_FILE_KEY" ] && args+=(--file-key "$TS_FILE_KEY")
         [ -n "$TS_THRESHOLD" ] && args+=(--threshold "$TS_THRESHOLD")
         [ "$TS_PRUNE" = "true" ] && args+=(--prune)
-        npx --yes "tokensync@$TS_VERSION" sync "${args[@]}" --no-color
+        npx --yes "tokensync-cli@$TS_VERSION" sync "${args[@]}" --no-color
         node "$GITHUB_ACTION_PATH/action/sync-pr.mjs"
 
     - name: Fail on drift
       if: inputs.fail-on-drift == 'true' && steps.check.outputs.drift == 'true'
       shell: bash
       run: |
-        echo "::error title=Design tokens drifted::${{ steps.check.outputs.changed }} changed, ${{ steps.check.outputs.added }} missing in code, ${{ steps.check.outputs.removed }} not in Figma. Run 'npx tokensync sync --write'."
+        echo "::error title=Design tokens drifted::${{ steps.check.outputs.changed }} changed, ${{ steps.check.outputs.added }} missing in code, ${{ steps.check.outputs.removed }} not in Figma. Run 'npx tokensync-cli sync --write'."
         exit 1

@@ -77,6 +77,6 @@ exports[`renderers > markdown report matches the snapshot 1`] = `
 
 </details>
 
-<sub>Colors compared with CIEDE2000; differences under ΔE 1 are ignored. Run \`npx tokensync sync --write\` to update code from Figma.</sub>
+<sub>Colors compared with CIEDE2000; differences under ΔE 1 are ignored. Run \`npx tokensync-cli sync --write\` to update code from Figma.</sub>
 "
 `;

@@ -32,8 +32,8 @@ Runtime dependencies: **2** (`zod`, `picocolors`). Adding a third needs the huma
 
 | Surface       | How                                                                                                                                                                                                   |
 | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CLI           | npm package `tokensync`, `bin` → `dist/cli.js`; `npx tokensync`.                                                                                                                                      |
-| Library       | `import { check, sync, renderMarkdown } from 'tokensync'`; pure functions, usable in any JS runtime.                                                                                                  |
+| CLI           | npm package `tokensync-cli` (the name `tokensync` was taken), `bin` → `dist/cli.js`; `npx tokensync-cli`.                                                                                                                                      |
+| Library       | `import { check, sync, renderMarkdown } from 'tokensync-cli'`; pure functions, usable in any JS runtime.                                                                                                  |
 | GitHub Action | Composite action (`action.yml`) that runs the published CLI with `npx` and uses small zero-dependency scripts for the GitHub API. A composite action avoids committing a bundled `dist/` to the repo. |
 | Demo          | Static site on GitHub Pages; all URLs relative so it works under `/tokensync/`.                                                                                                                       |
 

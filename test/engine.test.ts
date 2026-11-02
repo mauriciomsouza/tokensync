@@ -105,7 +105,7 @@ describe('sync on the Aurora example', () => {
     expect(after.summary).toMatchObject({ changed: 0, added: 0, removed: 1 });
 
     const css = writes['src/styles/tokens.css']!;
-    expect(css).toContain('Run `npx tokensync check` before editing by hand.');
+    expect(css).toContain('Run `npx tokensync-cli check` before editing by hand.');
     expect(css).toContain('--color-fg-muted: #5e5e6c; /* rounded by hand, still within ΔE tolerance */');
     expect(css).toContain('--color-focus-ring: rgb(100 64 240 / 0.4);');
     expect(css).toContain('--radius-md: 8px;');

@@ -1,7 +1,7 @@
 /**
  * Aurora design tokens — semantic layer.
  * Source of truth is the "Aurora / Foundations" Figma file.
- * Run `npx tokensync check` before editing by hand.
+ * Run `npx tokensync-cli check` before editing by hand.
  */
 
 :root {

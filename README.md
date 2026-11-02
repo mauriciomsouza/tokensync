@@ -19,13 +19,13 @@ tokensync compares **Figma variables** with the **tokens in your code** (CSS cus
 ### CLI
 
 ```bash
-npm install --save-dev tokensync
+npm install --save-dev tokensync-cli
 
 # compare against an exported Figma Variables JSON
-npx tokensync check --figma ./figma-variables.json
+npx tokensync-cli check --figma ./figma-variables.json
 
 # …or fetch live (Figma Enterprise plans, token needs file_variables:read)
-FIGMA_TOKEN=… npx tokensync check --file-key AbC123xyz
+FIGMA_TOKEN=… npx tokensync-cli check --file-key AbC123xyz
 ```
 
 Minimal `tokensync.config.json`:
@@ -43,10 +43,10 @@ Minimal `tokensync.config.json`:
 Then:
 
 ```bash
-npx tokensync check              # exit 1 on drift: put it in CI
-npx tokensync report             # writes tokensync-report.html
-npx tokensync sync               # preview the changes as a diff
-npx tokensync sync --write       # apply them
+npx tokensync-cli check              # exit 1 on drift: put it in CI
+npx tokensync-cli report             # writes tokensync-report.html
+npx tokensync-cli sync               # preview the changes as a diff
+npx tokensync-cli sync --write       # apply them
 ```
 
 ### GitHub Action

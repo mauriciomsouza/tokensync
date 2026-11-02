@@ -1,5 +1,5 @@
 {
-  "name": "tokensync",
+  "name": "tokensync-cli",
   "version": "0.1.0",
   "description": "Catch design-token drift between Figma variables and code before it ships.",
   "keywords": [

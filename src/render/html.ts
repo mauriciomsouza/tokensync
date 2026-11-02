@@ -237,7 +237,7 @@ export function renderHtml(result: DriftResult, opts: HtmlOptions = {}): string 
 <p class="ts-sub">${drift ? `${s.total} token${s.total === 1 ? '' : 's'} drifted from Figma${source}.` : `Code matches Figma${source}.`}</p></div>
 <div class="ts-stats">${stat('changed', s.changed, 'changed')}${stat('added', s.added, 'missing in code')}${stat('removed', s.removed, 'not in Figma')}${stat('ok', s.inSync, 'in sync')}</div></header>
 ${result.targets.map(targetSection).join('\n')}
-<footer class="ts-foot"><span>${e(summaryLine(result))} · colors compared with CIEDE2000, threshold ΔE ${result.threshold}</span><span>${drift ? 'Fix with <code>npx tokensync sync --write</code>' : ''}${opts.generatedAt ? ` · ${e(opts.generatedAt)}` : ''}</span></footer>
+<footer class="ts-foot"><span>${e(summaryLine(result))} · colors compared with CIEDE2000, threshold ΔE ${result.threshold}</span><span>${drift ? 'Fix with <code>npx tokensync-cli sync --write</code>' : ''}${opts.generatedAt ? ` · ${e(opts.generatedAt)}` : ''}</span></footer>
 </div>`;
   if (opts.fragment) return `<div class="ts-report">${inner}</div>`;
   return `<!doctype html>

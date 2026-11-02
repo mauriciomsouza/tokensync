@@ -24,9 +24,9 @@ CLI (`check`, `report`, `sync`), terminal/JSON/Markdown/HTML output, GitHub Acti
 
 ### Phase 3: First release (next)
 
-Publish `tokensync@0.1.0` to npm, tag `v0.1.0` and `v0` for the Action, enable GitHub Pages, run the Action on a real pull request in a sandbox repo.
+Publish `tokensync-cli@0.1.0` to npm, tag `v0.1.0` and `v0` for the Action, enable GitHub Pages, run the Action on a real pull request in a sandbox repo.
 
-**G3, shipped:** the published package installs and runs `npx tokensync check` in a clean directory; the Action posts and then updates one comment on a real PR; the Pages URL serves the playground. _Approver: human owner._
+**G3, shipped:** the published package installs and runs `npx tokensync-cli check` in a clean directory; the Action posts and then updates one comment on a real PR; the Pages URL serves the playground. _Approver: human owner._
 
 ### Phase 4: Launch
 

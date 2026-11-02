@@ -116,7 +116,7 @@ export function renderMarkdown(result: DriftResult, opts: MarkdownOptions = {}):
   }
 
   const foot = [`Colors compared with CIEDE2000; differences under ΔE ${result.threshold} are ignored.`];
-  if (drift) foot.push('Run `npx tokensync sync --write` to update code from Figma.');
+  if (drift) foot.push('Run `npx tokensync-cli sync --write` to update code from Figma.');
   if (opts.reportUrl) foot.push(`[Open the visual report](${opts.reportUrl}).`);
   out.push(`<sub>${foot.join(' ')}</sub>`, '');
   return out.join('\n');
